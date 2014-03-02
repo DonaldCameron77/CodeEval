@@ -6,3 +6,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+*.o
+a.out*
+*.exe
