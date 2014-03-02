@@ -71,9 +71,10 @@ The word list always will be the same, and its length will be around 10000 words
 #include <iostream>
 #include <fstream>
 
-#include <vector>           // candidates
-#include <deque>            // friend list
-#include <unordered_set>    // members of a candidate's social graph found so far
+#include <vector>           // initial candidates
+#include <queue>            // pending list of friends whose friends we need to check for
+#include <unordered_set>    // members of a candidate's social graph found so far.
+							// We need it to be sure we don't count them twice
 
 #include "dict.h"
 
@@ -115,16 +116,16 @@ unsigned get_graph(const string & str, Dictionary & dict)
     // it would have to support fast lookup, avoidance of dups when inserting,
     // and a "next element" method
     
-    deque<string> members; // str and its friends
+    queue<string> pending; // str and its friends
     unordered_set<string> found; // to avoid re-finding and retrying a member
     
     found.insert(str);
-    members.push_back(str);
+    pending.push(str);
     
-    while (!members.empty())
+    while (!pending.empty())
     {
-        const string cur_str = members.front();
-        members.pop_front();
+        const string cur_str = pending.front();
+        pending.pop();
         
         // character removal
         for (unsigned i = 0; i < cur_str.length(); ++i) {
@@ -132,7 +133,7 @@ unsigned get_graph(const string & str, Dictionary & dict)
             tmp.erase(i, 1);
             if (found.find(tmp) == found.end() && dict.lookup(tmp)) {
                 found.insert(tmp);
-                members.push_back(tmp);
+                pending.push(tmp);
             }
         }
         
@@ -144,7 +145,7 @@ unsigned get_graph(const string & str, Dictionary & dict)
                 tmp[i] = c;
                 if (found.find(tmp) == found.end() && dict.lookup(tmp)) {
                     found.insert(tmp);
-                    members.push_back(tmp);
+                    pending.push(tmp);
                 }
             }
         } 
@@ -157,7 +158,7 @@ unsigned get_graph(const string & str, Dictionary & dict)
                 tmp[i] = c;
                 if (found.find(tmp) == found.end() && dict.lookup(tmp)) {
                     found.insert(tmp);
-                    members.push_back(tmp);
+                    pending.push(tmp);
                 }
             }
         } 
@@ -169,7 +170,7 @@ unsigned get_graph(const string & str, Dictionary & dict)
             tmp.append(1, c);
             if (found.find(tmp) == found.end() && dict.lookup(tmp)) {
                 found.insert(tmp);
-                members.push_back(tmp);
+                pending.push(tmp);
             }
         }
          
