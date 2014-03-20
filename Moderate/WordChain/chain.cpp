@@ -94,15 +94,15 @@ int main(int argc, char *argv[]) {
 		istringstream iss(line);
 		string s;
 		while (iss >> s) {
-			cout << s << " "; // output line will have trailing ' '
+			// cout << s << " "; // output line will have trailing ' '
 			strmap.insert(make_pair(s[0], s));
 		}
-		cout << endl;
+		// cout << endl;
 		// now print what we have
-		for (auto it = strmap.begin(); it != strmap.end(); ++it) {
-			cout << it->second.s << " ";
-		}
-		cout << endl;
+		// for (auto it = strmap.begin(); it != strmap.end(); ++it) {
+			// cout << it->second.s << " ";
+		// }
+		// cout << endl;
 		
 		unsigned len = find_longest_chain(strmap);
 		if (len) cout << len;
