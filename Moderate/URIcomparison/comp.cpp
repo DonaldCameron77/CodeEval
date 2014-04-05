@@ -66,25 +66,50 @@ void normalize_ports(string & s1, string & s2) {
     stripped_port(s2);  
 }
 
+void lwc_scheme_hostname( string & s )
+{
+    unsigned pos = s.find_first_of(':');
+    // What follows position pos one or two slashes, followed by a hostname,
+    // optionally followed by a slash and more path info.  The latter should
+    // retain its initial case.
+    pos++;
+    while (s[pos] == '/') pos++;
+    pos = s.find_first_of('/', pos);
+    if (pos == (unsigned) s.npos) {
+        // no slash after hostname - hit end of string;
+        pos = s.size();
+    }
+    
+    for (unsigned i = 0; i < pos; ++i) {
+        char c = s[i];
+        if (c >= 'A' && c <= 'Z') {
+            s[i] = c - 'A' + 'a';
+        }
+    }
+}
+
 bool are_equal_URIs( string & s1, string & s2 )
 {
 #ifdef DEBUG
     cout << "string 1: " << s1 << '\n';
 	cout << "string 2: " << s2 << '\n';
 #endif
-    // normalize to lowercase
-    // boo hoo this craps all over in lldb - debugger bug? Works find otherwise.
-    transform(s1.begin(), s1.end(), s1.begin(), ::tolower);
-    transform(s2.begin(), s2.end(), s2.begin(), ::tolower);
+    // comparison to the right of the hostname is case sensitive,
+    // so the following is wrong
+    // transform(s1.begin(), s1.end(), s1.begin(), ::tolower);
+    // transform(s2.begin(), s2.end(), s2.begin(), ::tolower);
+    
+    lwc_scheme_hostname(s1);
+    lwc_scheme_hostname(s2);
     
     expand_percent_encoding(s1);
     expand_percent_encoding(s2);
     
-#ifdef DEBUG
+// #ifdef DEBUG
     cout << "\nAfter % coding expansion\n";
     cout << "string 1: " << s1 << '\n';
 	cout << "string 2: " << s2 << '\n';
-#endif
+// #endif
 
     if (s1 == s2) return true;
     
