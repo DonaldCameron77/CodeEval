@@ -103,7 +103,6 @@ using namespace std;
 
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; LEXER  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
 
-
 class Token {
 public:
     char kind;        // what kind of token
@@ -331,6 +330,7 @@ long double primary()
 // is not directly supported by C++ stream I/O
 
 // "junk" == trailing zeros and '.'
+
 string trim_trailing_junk(long double val)
 {
 	ostringstream sstream;
@@ -349,35 +349,36 @@ string trim_trailing_junk(long double val)
 	// digits present.  So first we null out anything beyond the first
 	// 5 fractional places
 	
-	// Bug: what about rounding?  It seems, to get 5 fractional
-	// digits with the rightmost digit rounded, you have to add
-	// .00001 to the value if the 6th fractional digit is greater
-	// than 5.
-
 	outstr.erase(dotpos+6);
 	
 	// Then begin at min(outstr.size()-1, dotpos+5), ignoring nulls
 	// and replacing '0' with nulls, until a nonzero digit is
 	// seen or dotpos is reached.
 
+#ifdef DEBUG
+	cout << "size of outstr: " << outstr.size() << " ... outstr: ";
+
+	for (unsigned long x = 0; x < outstr.size(); ++x) {
+	    cout << outstr[x] << " ";
+	}
+	cout << "end of outstr" << endl;
+#endif
+
 	unsigned long i;
 	for (i = outstr.size()-1; i >= dotpos; --i) {
-		// scan backwards until a nonzero digit or a '.' is found
-		if (outstr[i] >= '1' && outstr[i] <= '9') {
-			// nonzero digit - we're done but keep this digit
-			i++;
-			break;
-		}
-		if (outstr[i] == '.') // - we're done and we'll remove the '.' too
-			break;
-		if (outstr[i] == '\0' ||  outstr[i] == '0') {
-			// trailing 0 or perhaps a null(?) .. we'll zap it
-			continue; 
-		}	
+	    // scan backwards until a nonzero digit or a '.' is found
+	    if (outstr[i] >= '1' && outstr[i] <= '9') {
+		// nonzero digit - done, but keep this digit
+		i++;
+		break;
+	    }
+	    if (outstr[i] == '.') // - done, and we remove the '.' too
+		break;
+	    // we reach here if looking at a '0' or maybe a null)
 	}
 	
-	if (i < outstr.size() - 1)
-		outstr.erase(i);
+	if (i < outstr.size())
+	    outstr.erase(i);  // nuke from outstr[i] to end
 
 	return outstr;
 }
@@ -399,7 +400,7 @@ void print_dbl(long double val)
 		long double fract = da - i;		// fractional part
 		fract = fract * 100000; 	// effectively a left shift 5 places.
 		// 6th fractional digit (the millionth place) now in tenths place
-		fract = floor(fract + 0.5);	// round
+		fract = round(fract);
 		fract = fract / 100000;  	// return it to its former magnitude
 		long double new_d = i + fract;
 		if (negative) new_d = - new_d;	// and Bob's your uncle
