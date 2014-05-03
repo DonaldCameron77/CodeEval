@@ -9,3 +9,97 @@
 *.o
 a.out*
 *.exe
+.DS_Store
+
+# CodeEval directories to ignore
+
+#Easy
+Easy/Armstrong
+# Easy/BeautifulStrings
+Easy/BitPos
+Easy/CalculateDistance
+Easy/CapitalizeWords
+Easy/CompressedSequence
+Easy/DataRecovery
+Easy/EvenNumbers
+Easy/Fibonacci
+Easy/FileSize
+Easy/FindAWriter
+Easy/FizzBuzz
+# Easy/HappyNumbers
+Easy/HexToDecimal
+Easy/HiddenDigits
+Easy/LongestWord
+Easy/LowerCase
+Easy/LowestUniqueNumber
+Easy/MixedContent
+Easy/MorseCode
+Easy/MultiplesOfaNumber
+Easy/MultiplicationTables
+Easy/MultiplyLists
+Easy/NmodM
+Easy/OddNumbers
+Easy/PenultimateWord
+Easy/Primepalindrome
+Easy/ReverseWords
+Easy/RightmostChar
+Easy/RoadTrip
+Easy/RomanNumerals
+Easy/SetIntersection
+Easy/SimpleSorting
+Easy/SplitTheNumber
+Easy/SumOfDigits
+Easy/SumOfInt
+Easy/SumOfPrimes
+Easy/SwapCase
+Easy/SwapElements
+Easy/TheMajorElement
+Easy/UniqueElements
+Easy/WordToDigit
+
+# Moderate
+Moderate/ArrayAbsurdity
+Moderate/Cashreg
+Moderate/CountingPrimes
+Moderate/DecimalToBinary
+Moderate/DetectingCycles
+Moderate/EmailValidation
+Moderate/Endian
+Moderate/FindASquare
+Moderate/FirstNonRepeat
+Moderate/FlaviusJosephus
+Moderate/LCA
+Moderate/LongestLines
+Moderate/MinimumCoins
+Moderate/MthToLastElement
+Moderate/NumOfOnes
+Moderate/NumberPairs
+Moderate/OverlappingRectangles
+Moderate/Pangrams
+Moderate/PointInCircle
+Moderate/PrimeNumbers
+Moderate/RemoveCharacters
+Moderate/ReverseAndAdd
+Moderate/ReverseGroups
+# Moderate/SimpleCalculator
+Moderate/StackImplementation
+Moderate/Sudoku
+Moderate/SumOfIntegers
+Moderate/TrailingString
+# Moderate/URIcomparison
+Moderate/ValidParentheses
+# Moderate/WordChain
+
+# Hard
+# Hard/AdvancedCalculator.LL1
+Hard/AdvancedCalculator.lexyacc
+Hard/ClosestPair
+Hard/FollowingInteger
+# Hard/LevenshteinDistance
+Hard/PokerHands
+Hard/Prefix
+Hard/RobotMovements
+# Hard/StringPermutations
+Hard/TextDollar
+Hard/TextToNumber
+
