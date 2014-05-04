@@ -34,7 +34,7 @@ File.open(ARGV[0]).each_line do |line|
   happy_arr = Array.new(1, cur.to_i)
   loop do
     digits = cur.to_s.split(//)
-    cur = digits.inject(0) { | sum, digit | sum += digit.to_i ** 2 }
+    cur = digits.inject(0) { | sum, digit | digit.to_i ** 2 }
     happy_arr << cur
     if cur == 1
       puts 1
