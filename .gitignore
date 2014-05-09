@@ -63,7 +63,7 @@ Moderate/Cashreg
 Moderate/CountingPrimes
 Moderate/DecimalToBinary
 Moderate/DetectingCycles
-Moderate/EmailValidation
+# Moderate/EmailValidation
 Moderate/Endian
 Moderate/FindASquare
 Moderate/FirstNonRepeat
@@ -103,3 +103,4 @@ Hard/RobotMovements
 Hard/TextDollar
 Hard/TextToNumber
 
+#end of .gitignore file
