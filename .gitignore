@@ -70,6 +70,7 @@ Moderate/Endian
 Moderate/FindASquare
 Moderate/FirstNonRepeat
 Moderate/FlaviusJosephus
+# Moderate/JollyJumpers
 Moderate/LCA
 Moderate/LongestLines
 Moderate/MinimumCoins
@@ -96,6 +97,7 @@ Moderate/ValidParentheses
 # Hard/AdvancedCalculator.LL1
 Hard/AdvancedCalculator.lexyacc
 Hard/ClosestPair
+# Hard/DigitStatistics
 Hard/FollowingInteger
 # Hard/LevenshteinDistance
 Hard/PokerHands
