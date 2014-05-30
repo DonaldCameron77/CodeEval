@@ -75,6 +75,12 @@ while (line = gets) do
   slope = 1.0 * (ay[-1] - ay[0]) / (ax[-1] - ax[0])
   blocks = 0 
   
+  # We look at one rectangle at a time, in row-major order.
+  # We're assured the line lies in the interval (x_ix..x_ix+1),
+  # and we ask if its lowest point in that interval is less
+  # than the top of the rectangle (ay[y_ix+1]), and if its
+  # highest point is greater than the bottom of the rectangle
+  # (ay[y_ix].
   ay[0..-2].each_index do |y_ix|
     ax[0..-2].each_index do |x_ix|
       blocks += 1 if slope * ax[x_ix] < ay[y_ix + 1] &&
