@@ -14,7 +14,7 @@ a.out*
 # CodeEval directories to ignore
 
 #Easy
-Easy/Armstrong
+# Easy/ArmstrongNumbers
 # Easy/BeautifulStrings
 Easy/BitPos
 Easy/CalculateDistance
