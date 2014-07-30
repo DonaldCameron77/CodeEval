@@ -101,7 +101,7 @@ Moderate/ValidParentheses
 Hard/AdvancedCalculator.lexyacc
 Hard/ClosestPair
 # Hard/DigitStatistics
-Hard/FollowingInteger
+# Hard/FollowingInteger
 # Hard/LevenshteinDistance
 Hard/PokerHands
 Hard/Prefix
