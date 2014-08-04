@@ -103,7 +103,7 @@ Hard/ClosestPair
 # Hard/DigitStatistics
 # Hard/FollowingInteger
 # Hard/LevenshteinDistance
-Hard/PokerHands
+# Hard/PokerHands
 # Hard/PrefixExpressions
 Hard/RobotMovements
 # Hard/StringPermutations
