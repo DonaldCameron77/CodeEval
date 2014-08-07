@@ -113,5 +113,6 @@ Hard/RobotMovements
 # Hard/StringSubstitution
 Hard/TextDollar
 Hard/TextToNumber
+# Hard/WordSearch
 
 #end of .gitignore file
