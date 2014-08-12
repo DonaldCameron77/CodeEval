@@ -14,9 +14,10 @@ a.out*
 # CodeEval directories to ignore
 
 #Easy
+Easy/AgeDistribution
 # Easy/ArmstrongNumbers
 # Easy/BeautifulStrings
-Easy/BitPos
+Easy/BitPositions
 Easy/CalculateDistance
 Easy/CapitalizeWords
 Easy/CompressedSequence
@@ -30,6 +31,7 @@ Easy/FizzBuzz
 Easy/HexToDecimal
 # Easy/HiddenDigits
 # Easy/JugglingWithZeroes
+Easy/LettercasePercentageRatio
 Easy/LongestWord
 Easy/LowerCase
 Easy/LowestUniqueNumber
@@ -46,6 +48,7 @@ Easy/PenultimateWord
 Easy/ReverseWords
 Easy/RightmostChar
 Easy/RoadTrip
+Easy/RollerCoaster
 # Easy/RomanNumerals
 # Easy/SelfDescribingNumbers
 Easy/SetIntersection
@@ -73,7 +76,7 @@ Moderate/DetectingCycles
 # Moderate/EmailValidation
 Moderate/Endian
 Moderate/FindASquare
-Moderate/FirstNonRepeat
+# Moderate/FirstNonRepeatedCharacter
 Moderate/FlaviusJosephus
 # Moderate/JollyJumpers
 Moderate/LCA
@@ -102,6 +105,7 @@ Moderate/ValidParentheses
 
 # Hard
 # Hard/AdvancedCalculator.LL1
+Hard/ASCIIDecryption
 Hard/AdvancedCalculator.lexyacc
 # Hard/ClimbingStairs
 Hard/ClosestPair
@@ -112,6 +116,7 @@ Hard/ClosestPair
 # Hard/PrefixExpressions
 Hard/RobotMovements
 # Hard/StringPermutations
+# Hard/StringList
 # Hard/StringSearching	
 # Hard/StringSubstitution
 Hard/TextDollar
