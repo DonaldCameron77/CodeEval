@@ -103,6 +103,7 @@ Moderate/ValidParentheses
 # Hard
 # Hard/AdvancedCalculator.LL1
 Hard/AdvancedCalculator.lexyacc
+# Hard/ClimbingStairs
 Hard/ClosestPair
 # Hard/DigitStatistics
 # Hard/FollowingInteger
