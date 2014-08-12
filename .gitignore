@@ -66,6 +66,7 @@ Easy/WordToDigit
 
 # Moderate
 # Moderate/ArrayAbsurdity
+Moderate/APileOfBricks
 # Moderate/BalancedSmileys
 Moderate/Cashreg
 # Moderate/CityBlocksFlyover
@@ -74,17 +75,19 @@ Moderate/DecimalToBinary
 # Moderate/DecodeNumbers
 Moderate/DetectingCycles
 # Moderate/EmailValidation
-Moderate/Endian
+Moderate/Endianness
 Moderate/FindASquare
 # Moderate/FirstNonRepeatedCharacter
 Moderate/FlaviusJosephus
 # Moderate/JollyJumpers
 Moderate/LCA
+Moderate/Locks/
 Moderate/LongestLines
+Moderate/LowestCommonAncestor/
 # Moderate/LostInTranslation
 Moderate/MinimumCoins
 Moderate/MthToLastElement
-Moderate/NumOfOnes
+Moderate/NumberOfOnes/
 Moderate/NumberPairs
 Moderate/OverlappingRectangles
 Moderate/Pangrams
@@ -96,6 +99,7 @@ Moderate/ReverseGroups
 # Moderate/RomanAndArabic
 # Moderate/SimpleCalculator
 Moderate/StackImplementation
+Moderate/StringRotation
 # Moderate/Sudoku
 Moderate/SumOfIntegers
 Moderate/TrailingString

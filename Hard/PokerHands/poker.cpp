@@ -239,14 +239,14 @@ bool handtype::_trips() {
 // Re-sort it as highest pair, lower pair, sidecard.
 void handtype::reorder_two_pair( const int sidecard_pos ) {
     if (sidecard_pos == 0) {
-            _do_swap(0, 2);
-            _do_swap(2, 4);
+        _do_swap(0, 2);
+        _do_swap(2, 4);
     }
     else if (sidecard_pos == 2) {
-            _do_swap(2, 4);
+        _do_swap(2, 4);
     }
     else if  (sidecard_pos != 4) {
-            cout << "ERROR" << endl;
+        cout << "ERROR" << endl;
     }
 }
 

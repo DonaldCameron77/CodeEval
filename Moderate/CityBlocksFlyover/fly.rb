@@ -67,7 +67,7 @@ end
 
 while (line = gets) do
   sx, sy = line.chomp.split
-# now have coordinates x0..xn, y0..ym as strings
+  # now have coordinates x0..xn, y0..ym as strings
   # convert coordinate strings to arrays of int
   ax = sx[1..-2].split(',').map{ |elem| elem.to_i }
   ay = sy[1..-2].split(',').map{ |elem| elem.to_i }
