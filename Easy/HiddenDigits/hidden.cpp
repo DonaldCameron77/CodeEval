@@ -49,6 +49,11 @@ int main(int argc, char *argv[])
     string instr;
     const string searchstring("0123456789abcdefghij");
 
+    // dcc 2014-08: well I guess this was instructive,
+    // but there are other ways such as indexing the
+    // string ourselves, calling our custom map function
+    // on each character, which might insert nulls(?) for
+    // ignored chars?
     while (getline(inps, instr))
     {
         string outstr;

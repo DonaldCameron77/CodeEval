@@ -92,7 +92,7 @@ Moderate/NumberPairs
 Moderate/OverlappingRectangles
 Moderate/Pangrams
 Moderate/PointInCircle
-Moderate/PrimeNumbers
+# Moderate/PrimeNumbers
 Moderate/RemoveCharacters
 Moderate/ReverseAndAdd
 Moderate/ReverseGroups

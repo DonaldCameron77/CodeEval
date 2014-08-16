@@ -2,14 +2,15 @@
 WORD CHAIN - CodeEval Moderate challenge
 CHALLENGE DESCRIPTION:
 
-In this challenge we suggest you to play in the known game "Word chain" in which players come
-up with words that begin with the letter that the previous word ended with. The challenge
-is to determine the maximum length of a chain that can be created from a list of words.
+In this challenge we suggest you to play in the known game "Word chain"
+in which players come up with words that begin with the letter that the
+previous word ended with. The challenge is to determine the maximum
+length of a chain that can be created from a list of words.
 
 INPUT SAMPLE:
 
-Your program should accept as its first argument a path to a filename. Each line in this file
-contains a list of words separated by comma. E.g.
+Your program should accept as its first argument a path to a filename.
+Each line in this file contains a list of words separated by comma. E.g.
 
 soup,sugar,peas,rice
 ljhqi,nrtxgiu,jdtphez,wosqm
@@ -23,10 +24,11 @@ Print out the length of the longest chain, print out "None" if there is no chain
 None
 2
 
-Constraints: 
-The length of a list of words is in range [4, 35] 
-A word in a list of words is represented by a random lowercase ascii string with the length of [3, 7] letters. 
-There is no repeating words in a list of words.
+Constraints:
+
+The length of a list of words is in range [4, 35] A word in a list of
+words is represented by a random lowercase ascii string with the length
+of [3, 7] letters.  There is no repeating words in a list of words.
 */
 
 
@@ -76,39 +78,39 @@ unsigned find_longest_chain( multimap <char, sdescr> & strmap ) {
     return max_chain == 1 ? 0 : max_chain;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
+    if (argc != 2) {
+        cout << "usage: " << argv[0] << "<filename>\n";
+        return 1;
+    }
 
-	if (argc != 2) {
-    		cout << "usage: " << argv[0] << "<filename>\n";
-    		return 1;
-	}
+    ifstream ifs(argv[1]);
+    string line;
+    multimap < char, sdescr> strmap;
 
-	ifstream ifs(argv[1]);
-	string line;
-	multimap < char, sdescr> strmap;
+    while (getline(ifs, line))
+    {
+        replace(line.begin(), line.end(), ',', ' ');
+        strmap.clear();
+        istringstream iss(line);
+        string s;
+        while (iss >> s) {
+                // cout << s << " "; // output line will have trailing ' '
+            strmap.insert(make_pair(s[0], s));
+        }
+        // cout << endl;
+        // now print what we have
+        // for (auto it = strmap.begin(); it != strmap.end(); ++it) {
+                // cout << it->second.s << " ";
+        // }
+        // cout << endl;
+        
+        unsigned len = find_longest_chain(strmap);
+        if (len) cout << len;
+        else cout << "None";
+        cout << endl;
 
-	while (getline(ifs, line))
-	{
-		replace(line.begin(), line.end(), ',', ' ');
-		strmap.clear();
-		istringstream iss(line);
-		string s;
-		while (iss >> s) {
-			// cout << s << " "; // output line will have trailing ' '
-			strmap.insert(make_pair(s[0], s));
-		}
-		// cout << endl;
-		// now print what we have
-		// for (auto it = strmap.begin(); it != strmap.end(); ++it) {
-			// cout << it->second.s << " ";
-		// }
-		// cout << endl;
-		
-		unsigned len = find_longest_chain(strmap);
-		if (len) cout << len;
-		else cout << "None";
-		cout << endl;
-
-	} // while getline
+    } // while getline
 
 }
