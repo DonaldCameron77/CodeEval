@@ -69,12 +69,12 @@ Easy/WordToDigit
 # Moderate/ArrayAbsurdity
 Moderate/APileOfBricks
 # Moderate/BalancedSmileys
-Moderate/Cashreg
+# Moderate/CashRegister
 # Moderate/CityBlocksFlyover
 Moderate/CountingPrimes
 Moderate/DecimalToBinary
 # Moderate/DecodeNumbers
-Moderate/DetectingCycles
+# Moderate/DetectingCycles
 # Moderate/EmailValidation
 Moderate/Endianness
 Moderate/FindASquare
@@ -121,7 +121,7 @@ Hard/ClosestPair
 # Hard/LevenshteinDistance
 # Hard/PokerHands
 # Hard/PrefixExpressions
-Hard/RobotMovements
+# Hard/RobotMovements
 # Hard/StringPermutations
 # Hard/StringList
 # Hard/StringSearching	
