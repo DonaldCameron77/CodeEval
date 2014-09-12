@@ -2,19 +2,20 @@
 LEVENSHTEIN DISTANCE - CodeEval Hard challenge
 CHALLENGE DESCRIPTION:
 
-Two words are friends if they have a Levenshtein distance of 1 (For details see
-Levenshtein distance on Wikipedia). That is, you can add, remove, or substitute
-exactly one letter in word X to create word Y. A word’s social network consists
-of all of its friends, plus all of their friends, and all of their friends’ friends,
-and so on. Write a program to tell us how big the social network for the given word is,
-using our word list.
+Two words are friends if they have a Levenshtein distance of 1 (For
+details see Levenshtein distance on Wikipedia). That is, you can add,
+remove, or substitute exactly one letter in word X to create word Y. A
+word’s social network consists of all of its friends, plus all of their
+friends, and all of their friends’ friends, and so on. Write a program
+to tell us how big the social network for the given word is, using our
+word list.
 
 INPUT SAMPLE:
 
-The first argument will be a path to a filename, containing words, and the word list
-to search in. The first N lines of the file will contain test cases, they will be
-terminated by string 'END OF INPUT'. After that there will be a list of words one
-per line. E.g
+The first argument will be a path to a filename, containing words, and
+the word list to search in. The first N lines of the file will contain
+test cases, they will be terminated by string 'END OF INPUT'. After that
+there will be a list of words one per line. E.g
 
 recursiveness
 elastic
@@ -31,17 +32,16 @@ zymosimeters
 
 OUTPUT SAMPLE:
 
-For each test case print out how big the social network for the word is. In sample
-the social network for the word 'elastic' is 3 and for the word 'recursiveness' is 1.
-E.g.
+For each test case print out how big the social network for the word is.
+In sample the social network for the word 'elastic' is 3 and for the
+word 'recursiveness' is 1.  E.g.
 
 1
 3
 1
 
-Constraints: 
-Number of test cases N in range(15, 30) 
-The word list always will be the same, and its length will be around 10000 words 
+Constraints: Number of test cases N in range(15, 30) The word list
+always will be the same, and its length will be around 10000 words 
 */
 
 // Notes =========================================================================
@@ -71,10 +71,10 @@ The word list always will be the same, and its length will be around 10000 words
 #include <iostream>
 #include <fstream>
 
-#include <vector>           // initial candidates
-#include <queue>            // pending list of friends whose friends we need to check for
-#include <unordered_set>    // members of a candidate's social graph found so far.
-							// We need it to be sure we don't count them twice
+#include <vector>       // initial candidates
+#include <queue>        // pending list of friends whose friends we need to check for
+#include <unordered_set> // members of a candidate's social graph found so far.
+			// We need it to be sure we don't count them twice
 
 #include "dict.h"
 
@@ -105,8 +105,8 @@ void fill_dictionary(Dictionary & dict, ifstream & ifs) {
 // compute the social graph of str with respect to dict.  See above for details
 unsigned get_graph(const string & str, Dictionary & dict)
 {
-    // Using a single Levenshtein transformation (add, remove, or substitute one letter),
-    // comute the size of the 'social graph' of str.
+    // Using a single Levenshtein transformation (add, remove, or substitute
+    // one letter), compute the size of the 'social graph' of str.
     
     // When we find a friend of the candidate string, we add it to the candidate list.
     // We also add it to the found set, because we don't want to count it again if
@@ -141,7 +141,9 @@ unsigned get_graph(const string & str, Dictionary & dict)
         for (unsigned i = 0; i < cur_str.length(); ++i) {
             string tmp = cur_str;
             for (char c = 'a'; c <= 'z'; ++c) {
-                if (c == cur_str[i]) continue; // don't replace original char with itself
+                if (c == cur_str[i]) {
+                    continue; // don't replace original char with itself
+                }
                 tmp[i] = c;
                 if (found.find(tmp) == found.end() && dict.lookup(tmp)) {
                     found.insert(tmp);
@@ -180,21 +182,23 @@ unsigned get_graph(const string & str, Dictionary & dict)
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2) {
-    	cout << "usage: " << argv[0] << "<filename>\n";
-    	return 1;
-	}
+    if (argc != 2) {
+        cout << "usage: " << argv[0] << "<filename>\n";
+        return 1;
+    }
 
-	ifstream ifs(argv[1]);
-	
-	vector<string> cand;
-	get_candidates(cand, ifs);
-	
-	Dictionary dict;
-	fill_dictionary(dict, ifs);
-	
-	for (auto it = cand.cbegin(); it != cand.cend(); ++it) {
-	    unsigned friend_ct = get_graph(*it, dict);
-	    cout << friend_ct << endl;
-	}
+    ifstream ifs(argv[1]);
+    
+    vector<string> cand;
+    get_candidates(cand, ifs);
+    
+    Dictionary dict;
+    fill_dictionary(dict, ifs);
+    
+    for (auto it = cand.cbegin(); it != cand.cend(); ++it) {
+        unsigned friend_ct = get_graph(*it, dict);
+        cout << friend_ct << endl;
+    }
 }
+
+// EOF

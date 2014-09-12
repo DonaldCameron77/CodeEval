@@ -11,12 +11,12 @@
 #include "dict.h"
 
 bool Dictionary::lookup(std::string & s) {
-	// std::unordered_set<std::string>::const_iterator is = this.find(s);
-	const auto is = dictset.find(s);
-	return is == dictset.end() ? false : true;
+    // std::unordered_set<std::string>::const_iterator is = this.find(s);
+    const auto is = dictset.find(s);
+    return is == dictset.end() ? false : true;
 }
 
 void Dictionary::enter(std::string & s) {
-	dictset.insert(s);
+    dictset.insert(s);
 }
 
