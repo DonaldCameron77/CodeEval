@@ -1,4 +1,9 @@
+2014-04-20
 This version is still failing about 1/3 of CodeEval's tests,
 but I have not found the bug.  Hand-verifying correct output
 is tedious in the extreme, and I have not found any
 errors by doing so.
+
+2014-10-02
+Inexplicably, it now passes at CodeEval!
+
