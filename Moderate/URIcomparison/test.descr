@@ -1,5 +1,6 @@
 HTTP://cnn.com;http://cnn.com
 http://abc.com:80/~smith/home.html;http://ABC.com/%7Esmith/home.html
+http://abc.com:80/~smith/home.html;http://ABC.com/%21smith/home.html
 http://foo.bar/baz.html;file://foo.bar/BAZ.html
 http://foo.bar/baz%20.html;http://foo.bar/baz .html
 http://foo.bar:80/index.html;http://foo.bar/index.html
