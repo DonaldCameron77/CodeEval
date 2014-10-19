@@ -23,7 +23,9 @@ The following operations should be supported with their order (operator preceden
 
 INPUT SAMPLE:
 
-Your program should accept as its first argument a path to a filename. The input file contains several lines. Each line is one test case. Each line contains mathematical expression. E.g.
+Your program should accept as its first argument a path to a filename.
+The input file contains several lines. Each line is one test case. Each
+line contains mathematical expression. E.g.
 
 250*14.3
 3^6 / 117
@@ -45,14 +47,18 @@ For each set of input produce a single line of output which is the result of cal
 Note: Don't use any kind of eval function.
 
 Constraints: 
-Each number in input expression is greater than -20,000 and less than 20,000. 
-Each output number is greater than -20,000 and less than 20,000. 
-If output number is a float number it should be rounded to the 5th digit after the dot. 
-E.g 14.132646 gets 14.13265, 14.132644 gets 14.13264, 14.132645 gets 14.13265. 
 
-If output number has less than 5 digits after the dot you don't need to add zeros. 
-E.g. you need to print 16.34 (and not 16.34000) in case the answer is 16.34. 
-And you need to print 16 (and not 16.00000) in case the answer is 16.
+Each number in input expression is greater than -20,000 and less than
+20,000.  Each output number is greater than -20,000 and less than
+20,000.  If output number is a float number it should be rounded to the
+5th digit after the dot.  E.g 14.132646 gets 14.13265, 14.132644 gets
+14.13264, 14.132645 gets 14.13265. 
+
+If output number has less than 5 digits after the dot you don't need to
+add zeros.  E.g. you need to print 16.34 (and not 16.34000) in case the
+answer is 16.34.  And you need to print 16 (and not 16.00000) in case
+the answer is 16.
+
 */
 
 /*//////////////////////////////////////////////////////////////////////////////
@@ -338,48 +344,48 @@ long double primary();
 		
 long double expr()
 {
-	long double left = term();
-	Token t = tsp->nexttok();
-	
-	do {
-		switch (t.kind) {
-		case '+':
-			left += term();
-			t = tsp->nexttok();
-			break;
-		case '-':
-			left -= term();
-			t = tsp->nexttok();
-			break;
-		default:
-			tsp->putback(t);
-			return left;
-		}
-	} while (true);
+    long double left = term();
+    Token t = tsp->nexttok();
+    
+    do {
+        switch (t.kind) {
+        case '+':
+            left += term();
+            t = tsp->nexttok();
+            break;
+        case '-':
+            left -= term();
+            t = tsp->nexttok();
+            break;
+        default:
+            tsp->putback(t);
+            return left;
+        }
+    } while (true);
 }
 
 // Term --> Modulo {( '*' | '/' ) Modulo}
 
 long double term()
 {
-	long double left = modulo();
-	Token t = tsp->nexttok();
-	
-	do {
-		switch (t.kind) {
-		case '*':
-			left *= modulo();
-			t = tsp->nexttok();
-			break;
-		case '/':
-			left /= modulo();
-			t = tsp->nexttok();
-			break;
-		default:
-			tsp->putback(t);
-			return left;
-		}
-	} while (true);
+    long double left = modulo();
+    Token t = tsp->nexttok();
+    
+    do {
+        switch (t.kind) {
+        case '*':
+            left *= modulo();
+            t = tsp->nexttok();
+            break;
+        case '/':
+            left /= modulo();
+            t = tsp->nexttok();
+            break;
+        default:
+            tsp->putback(t);
+            return left;
+        }
+    } while (true);
 }
 
 // modulo  --> Factor { 'mod' Factor }
@@ -400,9 +406,9 @@ long double modulo()
             break;
         }
         default:
-			tsp->putback(t);
-			return left;
-		}
+            tsp->putback(t);
+            return left;
+            }
 	} while (true);
 }
 
@@ -414,19 +420,19 @@ long double modulo()
 
 long double factor()
 {
-	long double left = primary();
-	Token t = tsp->nexttok();
-	
-	if (t.kind == '^') {
-		long double right = factor();
-		return pow(left, right);
-	}
-	else if (t.kind == '!')
-	    return tgamma(left + 1); // yup.  And it "works" for non-integers!  Negative #'s?
-	else {
-		tsp->putback(t);
-		return left;
-	}
+    long double left = primary();
+    Token t = tsp->nexttok();
+    
+    if (t.kind == '^') {
+        long double right = factor();
+        return pow(left, right);
+    }
+    else if (t.kind == '!')
+        return tgamma(left + 1); // yup.  And it "works" for non-integers!  Negative #'s?
+    else {
+        tsp->putback(t);
+        return left;
+    }
 }
 
 /* 
@@ -442,25 +448,25 @@ long double factor()
 
 long double primary()
 {
-	Token t = tsp->nexttok();
+    Token t = tsp->nexttok();
 	
-	switch (t.kind) {
-	case '(': {	// '(' expr ')'
-		long double p = expr();
-		t = tsp->nexttok();
-		assert(t.kind == ')');
-		return p;
-	}
-	case '|': {	// '|' expr '|'
-		long double q = expr();
-		t = tsp->nexttok();
-		assert(t.kind == '|');
-		return fabs(q);
-	}
-	case '-':
-		return - primary();
-	case '+':
-		return primary();
+    switch (t.kind) {
+    case '(': {	// '(' expr ')'
+        long double p = expr();
+        t = tsp->nexttok();
+        assert(t.kind == ')');
+        return p;
+    }
+    case '|': {	// '|' expr '|'
+        long double q = expr();
+        t = tsp->nexttok();
+        assert(t.kind == '|');
+        return fabs(q);
+    }
+    case '-':
+        return - primary();
+    case '+':
+        return primary();
     case Sqrt_tok:  
     case Sin_tok:
     case Cos_tok:
@@ -489,11 +495,11 @@ long double primary()
             return log(arg);
         } // inner case for built-in funcs
     } // outer case for built-in funcs
-	default:
-		// using '0' as the tag for a constant number
-		assert(t.kind == '0'); // always an error if not;
-		return t.val;
-	}
+    default:
+        // using '0' as the tag for a constant number
+        assert(t.kind == '0'); // always an error if not;
+        return t.val;
+    }
 }
 
 //;;;;;;;;;;;;;;;;;;;;;;;; Printing routines ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -505,108 +511,108 @@ long double primary()
 
 string trim_trailing_junk(long double val)
 {
-	ostringstream sstream;
-	sstream << fixed << setprecision(5);
-	sstream << val;
-	string outstr = sstream.str();
+    ostringstream sstream;
+    sstream << fixed << setprecision(5);
+    sstream << val;
+    string outstr = sstream.str();
 
-	unsigned long dotpos = outstr.find('.');
-	assert(dotpos != string::npos);
-	
-	// we expect the ostringstream representation of a long double with a
-	// fractional part (under /* fixed */ & setprecision(5)) to be
-	// <wholeNumPart>'.'<digits><trailingZeros>, where digits
-	// or trailing zeros (but not both?) may not be present.
-	// Unfortunately there can be more than 5 fractional nonzero
-	// digits present.  So first we null out anything beyond the first
-	// 5 fractional places
-	
-	outstr.erase(dotpos+6);
-	
-	// Then begin at min(outstr.size()-1, dotpos+5), ignoring nulls
-	// and replacing '0' with nulls, until a nonzero digit is
-	// seen or dotpos is reached.
+    unsigned long dotpos = outstr.find('.');
+    assert(dotpos != string::npos);
+    
+    // we expect the ostringstream representation of a long double with a
+    // fractional part (under /* fixed */ & setprecision(5)) to be
+    // <wholeNumPart>'.'<digits><trailingZeros>, where digits
+    // or trailing zeros (but not both?) may not be present.
+    // Unfortunately there can be more than 5 fractional nonzero
+    // digits present.  So first we null out anything beyond the first
+    // 5 fractional places
+    
+    outstr.erase(dotpos+6);
+    
+    // Then begin at min(outstr.size()-1, dotpos+5), ignoring nulls
+    // and replacing '0' with nulls, until a nonzero digit is
+    // seen or dotpos is reached.
 
 #ifdef DEBUG
-	cout << "size of outstr: " << outstr.size() << " ... outstr: ";
+    cout << "size of outstr: " << outstr.size() << " ... outstr: ";
 
-	for (unsigned long x = 0; x < outstr.size(); ++x) {
-	    cout << outstr[x] << " ";
-	}
-	cout << "end of outstr" << endl;
+    for (unsigned long x = 0; x < outstr.size(); ++x) {
+        cout << outstr[x] << " ";
+    }
+    cout << "end of outstr" << endl;
 #endif
 
-	unsigned long i;
-	for (i = outstr.size()-1; i >= dotpos; --i) {
-	    // scan backwards until a nonzero digit or a '.' is found
-	    if (outstr[i] >= '1' && outstr[i] <= '9') {
-		// nonzero digit - done, but keep this digit
-		i++;
-		break;
-	    }
-	    if (outstr[i] == '.') // - done, and we remove the '.' too
-		break;
-	    // we reach here if looking at a '0' or maybe a null)
-	}
-	
-	if (i < outstr.size())
-	    outstr.erase(i);  // nuke from outstr[i] to end
+    unsigned long i;
+    for (i = outstr.size()-1; i >= dotpos; --i) {
+        // scan backwards until a nonzero digit or a '.' is found
+        if (outstr[i] >= '1' && outstr[i] <= '9') {
+            // nonzero digit - done, but keep this digit
+            i++;
+            break;
+        }
+        if (outstr[i] == '.') // - done, and we remove the '.' too
+            break;
+        // we reach here if looking at a '0' or maybe a null)
+    }
+    
+    if (i < outstr.size())
+        outstr.erase(i);  // nuke from outstr[i] to end
 
-	return outstr;
+    return outstr;
 }
 
 void print_dbl(long double val)
 {
-	cout << fixed << setprecision(5);
+    cout << fixed << setprecision(5);
 
-	const long double eps_kludge = 0.0000049999999999;
-	
-	if (abs(val - long(val)) < eps_kludge) {
-		cout << long(val) << endl; // at least 5 zeros, then perhaps some junk
-	}
-	else {
-		// deal with rounding the 5th decimal right of the decimal point
-		bool negative = val < 0;
-		long double da = abs(val);
-		long i = long(da); 			// integral portion
-		long double fract = da - i;		// fractional part
-		fract = fract * 100000; 	// effectively a left shift 5 places.
-		// 6th fractional digit (the millionth place) now in tenths place
-		fract = round(fract);
-		fract = fract / 100000;  	// return it to its former magnitude
-		long double new_d = i + fract;
-		if (negative) new_d = - new_d;	// and Bob's your uncle
-		
-		// now trim trailing zeros (and decimal point, if applicable, though
-		// I think the if clause dealt with a fractional part < 0.0000009999)
-		string outstr = trim_trailing_junk(new_d);
-		
-		cout << outstr << endl;
-	}
+    const long double eps_kludge = 0.0000049999999999;
+    
+    if (abs(val - long(val)) < eps_kludge) {
+        cout << long(val) << endl; // at least 5 zeros, then perhaps some junk
+    }
+    else {
+        // deal with rounding the 5th decimal right of the decimal point
+        bool negative = val < 0;
+        long double da = abs(val);
+        long i = long(da); 			// integral portion
+        long double fract = da - i;		// fractional part
+        fract = fract * 100000; 	// effectively a left shift 5 places.
+        // 6th fractional digit (the millionth place) now in tenths place
+        fract = round(fract);
+        fract = fract / 100000;  	// return it to its former magnitude
+        long double new_d = i + fract;
+        if (negative) new_d = - new_d;	// and Bob's your uncle
+        
+        // now trim trailing zeros (and decimal point, if applicable, though
+        // I think the if clause dealt with a fractional part < 0.0000009999)
+        string outstr = trim_trailing_junk(new_d);
+        
+        cout << outstr << endl;
+    }
 }
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; main ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;//
 
 int main(int argc, char *argv[]) {
-	if (argc != 2) {
-    		cout << "usage: " << argv[0] << "<filename>\n";
-    		return 1;
-	}
+    if (argc != 2) {
+        cout << "usage: " << argv[0] << "<filename>\n";
+        return 1;
+    }
 
-	ifstream ifs(argv[1]);
-	string line;
-	
-	cout << fixed << setprecision(5);
+    ifstream ifs(argv[1]);
+    string line;
+    
+    cout << fixed << setprecision(5);
 
-	while (getline(ifs, line))
-	{
-		Token_stream ts;
-		tsp = & ts;
-		ts.new_line(line);
+    while (getline(ifs, line))
+    {
+            Token_stream ts;
+            tsp = & ts;
+        ts.new_line(line);
 
-		long double val = expr();
-		
-		print_dbl(val);
-		
-	} // while getline
+        long double val = expr();
+        
+        print_dbl(val);
+        
+    } // while getline
 }
