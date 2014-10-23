@@ -11,7 +11,9 @@ The following operations should be supported with their order (operator preceden
 
 INPUT SAMPLE:
 
-Your program should accept as its first argument a path to a filename. The input file contains several lines. Each line is one test case. Each line contains mathematical expression. E.g.
+Your program should accept as its first argument a path to a filename.
+The input file contains several lines. Each line is one test case. Each
+line contains mathematical expression. E.g.
 
 250*14.3
 3^6 / 117
@@ -29,14 +31,18 @@ For each set of input produce a single line of output which is the result of cal
 Note: Don't use any kind of eval function.
 
 Constraints: 
-Each number in input expression is greater than -20,000 and less than 20,000. 
-Each output number is greater than -20,000 and less than 20,000. 
-If output number is a float number it should be rounded to the 5th digit after the dot. 
-E.g 14.132646 gets 14.13265, 14.132644 gets 14.13264, 14.132645 gets 14.13265. 
 
-If output number has less than 5 digits after the dot you don't need to add zeros. 
-E.g. you need to print 16.34 (and not 16.34000) in case the answer is 16.34. 
-And you need to print 16 (and not 16.00000) in case the answer is 16.
+Each number in input expression is greater than -20,000 and less than
+20,000.  Each output number is greater than -20,000 and less than
+20,000.  If output number is a float number it should be rounded to the
+5th digit after the dot.  E.g 14.132646 gets 14.13265, 14.132644 gets
+14.13264, 14.132645 gets 14.13265. 
+
+If output number has less than 5 digits after the dot you don't need to
+add zeros.  E.g. you need to print 16.34 (and not 16.34000) in case the
+answer is 16.34.  And you need to print 16 (and not 16.00000) in case
+the answer is 16.
+
 */
 
 /*//////////////////////////////////////////////////////////////////////////////
@@ -73,20 +79,22 @@ And you need to print 16 (and not 16.00000) in case the answer is 16.
 			'-' Primary
 			'+' Primary
 		
-	This grammar has already been rewritten in a form usable by an LL(1) parser.
-	Often, one will see a rule like "Expr -> Expr + Term."  This is
-	left-recursive, and if implemented literally would result in an infinite
-	recursion in the routine for Expr.  These rules don't cause trouble for
-	LR and LALR parsers, but don't work for LL parsers.
+        This grammar has already been rewritten in a form usable by an
+        LL(1) parser.  Often, one will see a rule like "Expr -> Expr +
+        Term."  This is left-recursive, and if implemented literally
+        would result in an infinite recursion in the routine for Expr.
+        These rules don't cause trouble for LR and LALR parsers, but
+        don't work for LL parsers.
 			
-	This implementation uses one-character lookahead. That complicates token
-	handling somewhat, as it's necessary to implement a token buffer so that
-	tokens can be put back on the input if not consumed after looking ahead.
+        This implementation uses one-character lookahead. That
+        complicates token handling somewhat, as it's necessary to
+        implement a token buffer so that tokens can be put back on the
+        input if not consumed after looking ahead.
 	
-	This calculator should be easily extendable to implement the larger set of
-	operations required for the Hard challenge "Advanced Calculator."
-	However, I will likely try to use lex and yacc for that, to refresh my
-	memory of those utilities.
+        This calculator should be easily extendable to implement the
+        larger set of operations required for the Hard challenge
+        "Advanced Calculator." However, I will likely try to use lex and
+        yacc for that, to refresh my memory of those utilities.
 
 /*////////////////////////////////////////////////////////////////////////////*/
 
