@@ -59,32 +59,47 @@
 #
 # =================================================================
 
-friends = {}
-groups = {}
+# user of a social network.
+# objects will be values of hash
+class SN_user
+  attr_reader :friends, :groups
+  def initialize(friends, groups)
+    # note: we don't need the name here b/c it's the hash key 
+    # and this object is the hash value
+    @friends = friends
+    @groups = groups
+  end
+end # SN_user
+
+social_network = {}
 
 File.open(ARGV[0]).each_line do |line|
   aline = line.split(":")
-  friends[aline[0]] = aline[1].split(',')
-  groups[aline[0]] = aline[2].chomp.split(',')
+  user = aline[0]
+  friends = aline[1].split(',')
+  groups = aline[2].chomp.split(',')
+  cur_user = SN_user.new(friends, groups)
+  social_network[user] = cur_user;
 end
 
-friends.each_key do |u|	  # for each user
-  recs = Hash.new(0)	  # [group => count]  # tally friends' groups here
-  flist = friends[u]
-  flist.each do |f|	  # for each friend
-    glist = groups[f]
-    glist.each do |g|
-      recs[g] += 1 unless groups[u].include?(g)
-    end # g
+social_network.each_key do |cur_user|	  # for each user
+  recs = Hash.new(0)	  # will be list of recommended groups for cur_user
+  flist = social_network[cur_user].friends
+  flist.each do |cur_friend|	  # for each friend
+    glist = social_network[cur_friend].groups
+    glist.each do |cur_friends_group|
+      recs[cur_friends_group] += 1 unless social_network[cur_user].groups.include?(cur_friends_group)
+    end # 
   end # f next if recs.size == 0
   threshold = (flist.size + 1) / 2
   recs.delete_if { |key, value| value < threshold }
   next if recs.size == 0
+  # can we sort the hash directly, avoiding this copy to an array?
   reclist = []	  # final sorted list of recommendations for user u
 		  # We create this b/c we prefer not to sort hash keys
 		  # in recs, so we extract them into reclist.
   recs.each_key { |k| reclist << k }
-  puts u + ':' + reclist.sort.join(',')
+  puts cur_user + ':' + reclist.sort.join(',')
 end # u
 
 # eof
