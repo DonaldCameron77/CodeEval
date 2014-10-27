@@ -49,10 +49,18 @@
 # 
 ###########################################################
 
+# To compute the maximum beauty, first you need a sorted array of the
+# frequencies of each letter's occurence.  E.g., if the input string
+# is "he the", the array will contain 2 2 1.  Multiply the first
+# entry by 26, the next by 25, and so on.  The resulting sum is the
+# "beauty."
+
 def compute_max_beauty( hash )
   max_beauty = 0
   cur_beauty_mult = 26
   arr = hash.sort_by { |letter, count| count }
+  # puts "hash  = " + hash.to_s
+  # puts "array = " + arr.to_s
   arr.reverse_each do |entry|
     max_beauty += cur_beauty_mult * entry[1]
     cur_beauty_mult -= 1
