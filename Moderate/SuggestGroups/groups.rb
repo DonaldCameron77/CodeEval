@@ -94,12 +94,11 @@ social_network.each_key do |cur_user|	  # for each user
   threshold = (flist.size + 1) / 2
   recs.delete_if { |key, value| value < threshold }
   next if recs.size == 0
-  # can we sort the hash directly, avoiding this copy to an array?
-  reclist = []	  # final sorted list of recommendations for user u
-		  # We create this b/c we prefer not to sort hash keys
-		  # in recs, so we extract them into reclist.
-  recs.each_key { |k| reclist << k }
-  puts cur_user + ':' + reclist.sort.join(',')
-end # u
 
+  # recs now contains only the group names to be suggested,
+  # but it's a hash and may not be sorted
+
+  puts cur_user + ':' + recs.keys.sort.join(',')
+
+end # cur_user
 # eof
