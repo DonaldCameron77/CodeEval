@@ -6,7 +6,7 @@ CHALLENGE DESCRIPTION:
 
 Given the numbers "a" and "n" find out how many times each digit from
 zero to nine is the last digit of the number in a sequence [ a, a2, a3,
-... an-1, an ]
+... an-1, an ] { note: they mean a**1, a**2, ... a**n }
 
 INPUT SAMPLE:
 
@@ -51,7 +51,7 @@ seq = [ [2, 4, 8, 6],
 
 # we could compute the length of seq[a]  whenever needed,
 # but let's see if it's readable doing it this way.
-# Note that e.g. a == 2 will may to seq[0] and seq_len[0]
+# Note that e.g. a == 2 will map to seq[0] and seq_len[0]
 
 seq_len = [4, 4, 2, 1, 1, 4, 4, 2]
 
