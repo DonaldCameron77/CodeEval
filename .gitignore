@@ -46,6 +46,7 @@ Easy/OddNumbers
 Easy/PenultimateWord
 # Easy/PrimePalindrome
 # Easy/QueryBoard
+Easy/Readmore
 Easy/ReverseWords
 Easy/RightmostChar
 Easy/RoadTrip
@@ -69,6 +70,7 @@ Easy/WordToDigit
 # Moderate/ArrayAbsurdity
 Moderate/APileOfBricks
 # Moderate/BalancedSmileys
+# Moderate/CardNumberValidation
 # Moderate/CashRegister
 # Moderate/CityBlocksFlyover
 Moderate/CountingPrimes
