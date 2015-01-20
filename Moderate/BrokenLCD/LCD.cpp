@@ -47,16 +47,18 @@
 // 
 // For example:
 // 
-// 10111010 01101111 11101001 11101110 11111111 11111110 11111111 
-// 01100101 10111111 11110100 10000111 01101011;6.9916
-// 10100011 10111101 10111111 01100111 10001111 11000010 01110001 
-// 11110011 01111111 11111110 11111111 11100111;7430.
-// 10110101 01110111 11011111 11111110 11111111 11111010 11111111 
-// 11111111 11111101 01110110 11111011 11111111;92.2720118
-// 11111100 01111001 11110111 11110110 11111011 11111111 11111111 
-// 11111110 10110110 11111101 11111111 11110110;570.02572
-// 11001111 11100111 11110111 11111111 11100101 11111110 01111111 
-// 11111111 11111000 11111111 11111111 10111111;7.3772427096
+// 
+// 10110001 11111000 11111110 11111111 11111111 11111111 11111111 11101101
+// 11111111 01111111 11110010 10100111;84.525784
+// 11111111 11110110 11101111 11110111 10111110 11110110 10111011 10100111
+// 11111100 01100100 11111101 01011110;5.57
+// 11000010 00001111 11111111 10111111 11101011 11110011 01111110 11011111
+// 11111111 11111111 11111001 01101110;857.71284
+// 11111111 01110111 10111011 11001101 11111011 11101010 11110100 01001101
+// 11011111 11111010 10010110 10111111;66.92
+// 11111011 10010001 11111011 11111101 10011111 10111110 01111100 11011101
+// 10111001 11111110 11101111 11110110;188.87
+// 
 // 
 // Every binary number represents the state of the segments in one digit. 1
 // means that a segment is working and can be turned on or off, 0 means
@@ -72,8 +74,8 @@
 // 
 // 1
 // 1
-// 0
 // 1
+// 0
 // 0
 // 
 // CONSTRAINTS:
@@ -120,22 +122,23 @@ i.e, you won't see .1234
 
 using namespace std;
 
-// Minimum segments working to represent a digit.  These are numbered from
-// the left, i.e., the digit 1 requires segments 2 and 3, which means
-// that bits 5 and 6 must be on, i.e., 0110 0000 is the minimum (0x60).
-static unsigned char digit_codes[] =
-    { 0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE0, 0xFE, 0xF6 };
+////////////////////////////////////////////////////////////////////////////////
+//
+//   Stuff having to do with the number to display
+//   - comes after ';' in input line
+//
 
 struct Number_to_display {
-    vector<unsigned> digits;
+    vector<unsigned char> digits;
     int decimal_pos;
+    // decimal_pos == -1 implies no decimal point was seen in the input number
     Number_to_display() : decimal_pos(-1) {}
-    // DEBUG
+#ifdef DEBUG
     void print_number();
-    // DEBUG
+#endif // DEBUG
 };
 
-// debug
+#ifdef DEBUG
 void Number_to_display::print_number() {
     for (unsigned i = 0; i < digits.size(); ++i) {
         cout << digits[i];
@@ -145,7 +148,7 @@ void Number_to_display::print_number() {
     }
     cout << endl;
 }
-// debug
+#endif // DEBUG
 
 void parse_number(const string & number_string, Number_to_display & the_number)
 {
@@ -161,6 +164,11 @@ void parse_number(const string & number_string, Number_to_display & the_number)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//   Stuff having to do with the incoming LCD status info 
+//
+
 const unsigned no_of_LCDs = 12; // from the problem description
 typedef unsigned char LCD_status_arr[no_of_LCDs];
 
@@ -173,6 +181,27 @@ unsigned char binary_string_to_unsigned_char(const string & LCD_string) {
     return LCD_status;
 }
 
+#ifdef DEBUG
+bool can_display_digit(
+                const unsigned digit_code_needed, const unsigned LCD_status );
+
+// normal location further down in file - commented out during debug
+static unsigned char digit_codes[] =
+    { 0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE0, 0xFE, 0xF6 };
+    
+void print_displayable_digits( unsigned char LCD_byte) {
+    for (unsigned i = 0; i < 10; ++i) {
+        if (can_display_digit( digit_codes[i], LCD_byte )) {
+            cout << ' ' << i;
+        }
+    }
+    // print decimal point if available in LCD_byte
+    if (LCD_byte & 0x1) {
+        cout << " .";
+    }
+}
+#endif // DEBUG
+
 void parse_LCDs(const string & LCD_string, LCD_status_arr LCD_status)
 {
     unsigned startpos = 0;
@@ -180,14 +209,72 @@ void parse_LCDs(const string & LCD_string, LCD_status_arr LCD_status)
         string next_LCD_string =
                 LCD_string.substr(startpos, 8);
         startpos += 9; // skip over 8 char for binary byte, + trailing blank
-        cout << next_LCD_string << endl;
         LCD_status[i] = binary_string_to_unsigned_char(next_LCD_string);
+#ifdef DEBUG
+        cout << i << ' ' << next_LCD_string;
+        print_displayable_digits(LCD_status[i]);
+        cout << endl;
+#endif // DEBUG
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//   Stuff concerning whether a number can be represented by the current state
+//   the 12 LCDs
+//
+
+#ifndef DEBUG
+// moved higher for debug purposes
+
+// Minimum segments working to represent a digit.  These are numbered from
+// the left, i.e., the digit 1 requires LCD segments 2 and 3, which means
+// that bits 5 and 6 (0 based and counting from the left) must be on,
+// i.e., 0110 0000 is the minimum (0x60).
+static unsigned char digit_codes[] =
+    { 0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE0, 0xFE, 0xF6 };
+#endif // DEBUG
+
+
+bool can_display_digit(
+                const unsigned digit_code_needed, const unsigned LCD_status ) {
+    // check that all bits set in digit_needed are also set in LCD_status
+    return (digit_code_needed & LCD_status) == digit_code_needed;
+}
+
 bool can_display( const Number_to_display & the_number,
-                  const LCD_status_arr & LCD_status) {
-    // how will this work?
+                  const LCD_status_arr & LCD_status)
+{
+    unsigned no_digits_in_number = the_number.digits.size();
+    
+    // index in number array of decimal point
+    int decimal_pos = the_number.decimal_pos;
+    if (decimal_pos == -1) {
+        decimal_pos = no_digits_in_number - 1;
+    }
+    
+    for (unsigned cur_LCD_start = 0;
+         cur_LCD_start <= no_of_LCDs - no_digits_in_number;
+         ++cur_LCD_start)
+    {
+        // first check if the decimal point can be displayed
+        if ((LCD_status[cur_LCD_start + decimal_pos] & 1) == 0) {
+            continue;
+        }
+        for (unsigned cur_digit_index = 0;
+             cur_digit_index < no_digits_in_number;
+             ++cur_digit_index)
+        {
+            unsigned char cur_digit = the_number.digits[cur_digit_index];
+            if (!can_display_digit( digit_codes[cur_digit],
+                        LCD_status[cur_LCD_start + cur_digit_index] )) {
+                goto break2;
+            }
+        }
+        return true;
+break2: ;
+    }
+    return false;
 }
 
 int main(int argc, char *argv[])
@@ -201,20 +288,25 @@ int main(int argc, char *argv[])
     string line;
 
     while (getline(ifs, line)) {
+#ifdef DEBUG
         cout << line << endl;
+#endif // DEBUG
         unsigned semi_pos = line.find(';');
         string number_string = line.substr(semi_pos + 1); // number to display
+#ifdef DEBUG
         cout << number_string << endl;
+#endif // DEBUG
         Number_to_display the_number;
         parse_number(number_string, the_number);
-        // DEBUG
+#ifdef DEBUG
         the_number.print_number();
-        // DEBUG
+#endif // DEBUG
         // line[semi_pos] = ' '; // facilitate parse
         LCD_status_arr LCD_status;
         parse_LCDs(line, LCD_status);
-        cout << (can_display(the_number, LCD_status) ? 1 : 0 << endl; 
+        cout << (can_display(the_number, LCD_status) ? 1 : 0) << endl; 
     } // while getline
 }
 
 // EOF
+
