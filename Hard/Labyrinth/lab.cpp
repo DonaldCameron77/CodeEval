@@ -129,45 +129,54 @@ unambiguous and never has branches.
 */
 
 /* Theory of Operation
-     Each instance of the recursion (in find_helper, I think it will be) corresponds to a cell along the current
-     path.  Upon entering find_helper, change the cell's symbol (which had better be a blank) to a plus sign.
-     Then, for each adjacent blank, call yourself with that blank cell as the new cell to visit.  if you find
-     you have made it out of the maze AND the path length is less than the current shortest path length, then
-     save the current maze with the path marked, AND save the path length, and backtrack.  Nothing special
-     about the backtracking after a solution b/c we'be been backtracking all along.
+
+    Each instance of the recursion (in find_helper, I think it will be)
+    corresponds to a cell along the current path.  Upon entering
+    find_helper, change the cell's symbol (which had better be a blank) to a
+    plus sign.  Then, for each adjacent blank, call yourself with that blank
+    cell as the new cell to visit.  if you find you have made it out of the
+    maze AND the path length is less than the current shortest path length,
+    then save the current maze with the path marked, AND save the path
+    length, and backtrack.  Nothing special about the backtracking after a
+    solution b/c we'be been backtracking all along.
+
+================== Um, no 8=( ... fails for large examples such as the
+    101x101 test case our CodeEval friends threw at it
+
+    Trying breadth first search, which turns out to be a simplified variant of
+    Djikstra's algorithm.  Start at the entrance, and enqueue the entrance cell.
+    At each iteration, pop the queue and enqueue the popped cell's neighbors
+    which have not yet been visited. Whenever you hit the exit point, you're done
+    except for walking back the shortest path.  To allow that, you have to save
+    the predecessor of each cell along this path.
+
+    This should work because
+
+    1. You are not a single rat trying to find the exit.  You are many rats
+    ... as many as are needed.  
+
+    2. At any cell the maze may offer a choice.  You clone rats to explore
+    each choice in parallel.
+
+    3. At the start of any iteration, all the rats are the same distance
+    from the entrance.
+
 */
-
-
-/* Theory of Operation
-Each instance of the recursion (in find_helper, I think it will be) corresponds to a cell along the current
-path.  Upon entering find_helper, change the cell's symbol (which had better be a blank) to a plus sign.
-Then, for each adjacent blank, call yourself with that blank cell as the new cell to visit.  if you find
-you have made it out of the maze AND the path length is less than the current shortest path length, then
-save the current maze with the path marked, AND save the path length, and backtrack.  Nothing special
-about the backtracking after a solution b/c we'be been backtracking all along.
-*/
-
-
-// #include "stdafx.h" // VS only
 
 #include <iostream>
 #include <fstream>
 
 #include <string>
 #include <vector>
+#include <queue>
 
-#include <climits>
 #include <cassert>
 
 using namespace std;
 
 typedef vector<string> maze_t;
 
-maze_t cur_best_path_maze;
-
 int width, height; // maze dimensions
-
-unsigned shortest_path_found;
 
 void print_maze(maze_t & maze)
 {
@@ -179,94 +188,134 @@ void print_maze(maze_t & maze)
     }
 }
 
+// info about corresponding cell in maze
+
+struct duplet {
+    int row, col;
+};
+
+struct cell_info_t {
+    bool visited;
+    duplet own;       // need indices for cell popped off queue
+    duplet came_from; // need to know predecessor on best path
+    cell_info_t() : visited(false) {
+        own.row = own.col = came_from.row = came_from.col = -1;
+    }
+};
+
+typedef vector<vector<cell_info_t>> info_arr_t;
+
+void init_info_arr(info_arr_t & info_arr)
+{
+    // initialize the parallel grid of information
+    cell_info_t cell_info;
+    vector<cell_info_t> info_row(width, cell_info);
+    for (int r = 0; r < height; ++r) {
+        info_arr.push_back(info_row);
+    }
+}
+
+int find_entry(maze_t & maze) {
+    for (int col = 0; col < width; ++col) {
+        if (maze[0][col] == ' ') {
+            return col;
+        }
+    }
+    return -1;  // shut up compiler warning
+}
+
 bool in_maze(int row, int col) {
     return row >= 0 && row < height &&
            col >= 0 && col < width;
 }
 
-bool is_exit(const maze_t & maze, int row, int col) {
-    // return row == height - 1 && maze[row][col] == ' ';
+bool is_exit(int row, int col) {
+    // We know there is only one blank cell in the bottom row.
+    // Could pass maze in too and assert current cell is blank
     return row == height - 1;
 }
 
-// if this path length is shorter, save the maze
-// with its path demarcated by '+'
-void process_exit(maze_t & maze, unsigned cur_path_len) {
-    if (cur_path_len < shortest_path_found) {
-        shortest_path_found = cur_path_len;
-        cur_best_path_maze = maze;
-    }
+void process_exit(
+    maze_t & maze, info_arr_t & info_arr, int exit_row, int exit_col) {
+    // mark path back to the entrance with '+'
+    int row = exit_row;
+    int col = exit_col;
+
+    // note the entrance row must be in row 0, and there can only
+    // be one entrance.  Note row will get set to -1 on the
+    // final trip through the loop.
+    do {
+        maze[row][col] = '+';
+        cell_info_t cell_info = info_arr[row][col];
+        // row = info_arr[row][col].came_from.row;
+        // col = info_arr[row][col].came_from.col;
+        row = cell_info.came_from.row;
+        col = cell_info.came_from.col;
+    } while (row >= 0);
 }
 
-// This is where the magic happens
-void find_helper(
-        maze_t & maze, unsigned cur_path_len, const int row, const int col)
+void process_neighbor(
+    maze_t & maze, info_arr_t & info_arr, queue<cell_info_t> & info_queue,
+    int pred_row, int pred_col, int own_row, int own_col)
 {
-    if (!in_maze(row, col)) {
+    // For each unvisited neighbor, set 'own' to its coordinates,
+    // 'came_from' to pred_row, pred_col, and set visited = true.
+    // Append it to the back of the queue
+
+    if (! in_maze(own_row, own_col) ||
+        maze[own_row][own_col] != ' ' ||
+        info_arr[own_row][own_col].visited) {
         return;
     }
-    assert(maze[row][col] == ' ');
-    cur_path_len++;
-    maze[row][col] = '+';
-    if (is_exit(maze, row, col)) {
-        // debug
-        cout << "Found solution ... path length = " << cur_path_len << endl;
-        process_exit(maze, cur_path_len);
-    }
-    else {
-        // take next step(s) into the maze
 
-        // Would it have been simpler to just use an array
-        // of increments?  Of the nine combinations of loop
-        // control variables, only four are actual neighbors
-        // (neglecting edges of the grid).
+    info_arr[own_row][own_col].visited = true;
+    info_arr[own_row][own_col].own.row = own_row;
+    info_arr[own_row][own_col].own.col = own_col;
+    info_arr[own_row][own_col].came_from.row = pred_row;
+    info_arr[own_row][own_col].came_from.col = pred_col;
 
-        for (int row_incr = -1; row_incr <= 1; ++row_incr) {
-            for (int col_incr = -1; col_incr <= 1; ++col_incr)
-            {
-                // Visit vertical and horizontal neighbors,
-                // but not diagonal ones.  Don't visit yourself.
-                // And don't step off the grid.
-
-                if (abs(row_incr) == abs(col_incr)) {
-                    continue;  // can't move diagonally or visit self!!
-                }
-
-                int r = row + row_incr;
-                int c = col + col_incr;
-                // cout << "Visiting row " << r << ", column " << col << endl;
-
-                if (!in_maze(row, col)) {
-                    continue;
-                }
-
-                if (maze[r][c] == ' ') {
-                    find_helper(maze, cur_path_len, r, c);
-                }
-            }
-        }
-    }
-    maze[row][col] = ' ';  // restore state and backtrack
+    info_queue.push(info_arr[own_row][own_col]);
 }
 
-void print_shortest_path(const maze_t orig_maze)
+void print_shortest_path(const maze_t & orig_maze)
 {
-    shortest_path_found = INT_MAX;  // 32767 which had better be enough!
+    maze_t maze = orig_maze;    // 'maze' is working copy of grid
 
-    maze_t maze = orig_maze; // 'maze' will be our working copy
+    info_arr_t info_arr;        // parallel grid of cell information
+    init_info_arr(info_arr);
 
-    // Find entry point and initiate solve
-    for (int col = 0; col < width; ++col) {
-        if (maze[0][col] == ' ') {
-            find_helper(maze, 0, 0, col);
-            break;
+    queue<cell_info_t> info_queue;
+
+    int entry_pt_col = find_entry(maze);  // indices are then 0, col
+    info_arr[0][entry_pt_col].visited = true;
+    info_arr[0][entry_pt_col].own.row = 0;
+    info_arr[0][entry_pt_col].own.col = entry_pt_col;
+    // came_from will be -1, -1 as it should be
+    info_queue.push(info_arr[0][entry_pt_col]);
+    
+    while (true)
+    {
+        cell_info_t cur_info = info_queue.front();
+        info_queue.pop();
+        assert(cur_info.visited == true);
+        int cur_row = cur_info.own.row;
+        int cur_col = cur_info.own.col;
+
+        if (is_exit(cur_row, cur_col)) {
+            process_exit(maze, info_arr, cur_row, cur_col);
+            print_maze(maze);
+            return;  // yippee we're done
+        }
+        else {
+            // try neighbors clockwise starting from midnight (12 hr clock 8-)
+            process_neighbor(maze, info_arr, info_queue,  cur_row, cur_col, cur_row - 1, cur_col);
+            process_neighbor(maze, info_arr, info_queue,  cur_row, cur_col, cur_row, cur_col + 1);
+            process_neighbor(maze, info_arr, info_queue,  cur_row, cur_col, cur_row + 1, cur_col);
+            process_neighbor(maze, info_arr, info_queue,  cur_row, cur_col, cur_row, cur_col - 1);
         }
     }
-    print_maze(cur_best_path_maze);
 }
 
-// Main for running under VS
-// int _tmain(int argc, _TCHAR* argv[])
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
@@ -276,16 +325,14 @@ int main(int argc, char *argv[])
 
     ifstream ifs(argv[1]);
     string line;
-    maze_t orig_maze;  // keep this around, at least during debugging
+    maze_t orig_maze;
 
     while (getline(ifs, line)) {
-        // cout << "next input line: " << line << endl;
         orig_maze.push_back(line);
     }
 
     width = orig_maze[0].size();
     height = orig_maze.size();
-    // cout << "width = " << width << ", height = " << height << endl;
 
     print_shortest_path(orig_maze);
 
