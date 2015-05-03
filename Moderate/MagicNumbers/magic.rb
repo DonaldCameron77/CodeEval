@@ -15,7 +15,8 @@
 #    value of the current digit to move right again. Wrap back to the
 #    leftmost digit as necessary. A magic number will visit every digit
 #    exactly once and end at the leftmost digit.
-#    For example, consider the magic number 6231.
+#
+# For example, consider the magic number 6231.
 # 
 # Start with 6. Advance 6 steps to 3, wrapping around once
 # (6→2→3→1→6→2→3).
@@ -65,31 +66,30 @@
 	  else set n.visited and advance 
 =end
 
+# refactored version 2015-05-03 - minor cleanup based on new C# code
+
 def print_magic_numbers(a, b)
   found_magic = false;
 
   a.upto(b) do |c|
-    c_digits = c.to_s.split('').map(&:to_i)
-    next if c_digits.uniq.length != c_digits.length
-    # puts "candidate without repeated digits: #{c}"
+    digits = c.to_s.split('').map(&:to_i)
+    next if digits.uniq.length != digits.length # candidate has repeated digits: #{c}"
 
-    visited = Array.new(c_digits.length, false)
+    visited = Array.new(digits.length, false)
     cur_index = 0
 
     loop do
-      cur_index = (cur_index + c_digits[cur_index]) % c_digits.length
-      if cur_index != 0
-	break if visited[cur_index] # visiting digit position again? Not magic
-	visited[cur_index] = true;
-      else
-	# decision time: we're back to the leftmost digit
-	visited[cur_index] = true
-	if visited.count(true) == visited.size
-	  print " " if found_magic  # to suppress trailing blank on last magic #
-	  print c
-	  found_magic = true;
-        end
-	break; # c not magic
+
+      cur_index = (cur_index + digits[cur_index]) % digits.length
+      break if visited[cur_index] # visiting digit position again? Not magic
+
+      visited[cur_index] = true;
+
+      if cur_index == 0 # decision time: circled back to leftmost digit
+	break if visited.count(true) != visited.size
+	print " " if found_magic  # to suppress trailing blank on last magic #
+	print c
+	found_magic = true;
       end
     end # loop do
   end # a upto b

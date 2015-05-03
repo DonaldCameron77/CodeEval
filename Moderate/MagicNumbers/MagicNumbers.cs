@@ -5,17 +5,21 @@
  
     CHALLENGE DESCRIPTION:
 
-    There are two wizards, one good and one evil. The evil wizard has captured the princess. The only way to defeat the
-    evil wizard is to recite a set of magic numbers. The good wizard has given you two numbers, A and B. Find every magic
-    number between A and B, inclusive.
+    There are two wizards, one good and one evil. The evil wizard has
+    captured the princess. The only way to defeat the evil wizard is to
+    recite a set of magic numbers. The good wizard has given you two
+    numbers, A and B. Find every magic number between A and B,
+    inclusive.
 
     A magic number is a number that has two characteristics:
 
     1. No digits repeat.
 
-   2.  Beginning with the leftmost digit, take the value of the digit and move that number of digits to the right.
-       Repeat the process again using the value of the current digit to move right again. Wrap back to the leftmost
-       digit as necessary. A magic number will visit every digit exactly once and end at the leftmost digit.
+   2.  Beginning with the leftmost digit, take the value of the digit
+       and move that number of digits to the right.  Repeat the process
+       again using the value of the current digit to move right again. Wrap
+       back to the leftmost digit as necessary. A magic number will visit
+       every digit exactly once and end at the leftmost digit.
  
     For example, consider the magic number 6231.
 
@@ -54,6 +58,10 @@ using System.Linq;
 
 class Program
 {
+    // TODO: according to DotNetPerls.com, it is better to Add (append)
+    // to a List and reverse or otherwise traverse the list in the
+    // desired reverse order after all elements have been Added.  Insert
+    // is slow.
     static int[] intToArray(int num)
     {
         List<int> numbers = new List<int>();
