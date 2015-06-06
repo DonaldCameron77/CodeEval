@@ -10,13 +10,15 @@
 
 #include "dict.h"
 
-bool Dictionary::lookup(std::string & s) {
+using namespace std;
+
+bool Dictionary::lookup(const string & s) {
     // std::unordered_set<std::string>::const_iterator is = this.find(s);
     const auto is = dictset.find(s);
     return is == dictset.end() ? false : true;
 }
 
-void Dictionary::enter(std::string & s) {
+void Dictionary::enter(const string & s) {
     dictset.insert(s);
 }
 

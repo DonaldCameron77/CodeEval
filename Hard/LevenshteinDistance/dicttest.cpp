@@ -9,7 +9,7 @@ int main() {
     string a[] = { "red", "green", "blue" };
     Dictionary tbl;
     for (int i = 0; i < 3; ++i) {
-        tbl.insert(a[i]);
+        tbl.enter(a[i]);
     }
 
     bool found = tbl.lookup(a[1]);
