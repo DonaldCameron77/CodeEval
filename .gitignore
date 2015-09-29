@@ -22,10 +22,12 @@ Easy/CalculateDistance
 Easy/CapitalizeWords
 Easy/CompressedSequence
 Easy/DataRecovery
+# Easy/DeltaTime
 Easy/EvenNumbers
 Easy/FibonacciSeries
 Easy/FileSize
 Easy/FindAWriter
+# Easy/FindHighestScore
 Easy/FizzBuzz
 # Easy/HappyNumbers
 Easy/HexToDecimal
@@ -125,6 +127,7 @@ Hard/ClosestPair
 # Hard/FindMin
 # Hard/FollowingInteger
 # Hard/Labyrinth
+# Hard/LakesNotCakes
 # Hard/LevenshteinDistance
 # Hard/LongestCommonSubsequence
 # Hard/PokerHands
