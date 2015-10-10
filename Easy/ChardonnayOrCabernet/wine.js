@@ -97,7 +97,7 @@ function checkWinesVsLetters(wineArr, letters)
             }
         }
     }
-    if (outStr == "") {
+    if (outStr === "") {
         outStr = "False";
     }
     console.log(outStr);
@@ -116,9 +116,9 @@ function checkAWine(wine, letters)
         var matchedCurLetter = false;
         for (var i = 0; i < wine.length; ++i)
         {
-            if (!mask[i] && curLetter == wine[i])
+            if (!mask[i] && curLetter === wine[i])
             {
-                if (x == letters.length - 1) {
+                if (x === letters.length - 1) {
                     return true;
                 }
                 else {
@@ -138,7 +138,7 @@ var fs  = require("fs");
 
 fs.readFileSync(process.argv[2]).toString().split('\n').forEach(function (line)
 {
-    if (line != "")  // or if (line) ... for truthy/falsy
+    if (line !== "")  // or if (line) ... for truthy/falsy
     {
         var inArr = mySplit(line, '|');
         var wineArr = mySplit(inArr[0], " ");
