@@ -20,6 +20,7 @@ Easy/AgeDistribution
 Easy/BitPositions
 Easy/CalculateDistance
 Easy/CapitalizeWords
+# Easy/ChardonnayOrCabernet
 Easy/CompressedSequence
 Easy/DataRecovery
 # Easy/DeltaTime
@@ -121,7 +122,7 @@ Moderate/ValidParentheses
 Hard/ASCIIDecryption
 Hard/AdvancedCalculator.lexyacc
 # Hard/ClimbingStairs
-Hard/ClosestPair
+# Hard/ClosestPair
 # Hard/DaVyncy
 # Hard/DigitStatistics
 # Hard/FindMin
