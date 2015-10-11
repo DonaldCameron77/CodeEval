@@ -89,7 +89,7 @@ function findClosestPair(pointArr) {
     return minDistance;
 }
 
-// d is a disctance, as a floating point number.
+// d is a distance, as a floating point number.
 // if d is greater than or equal to 10,000 print INFINITY
 // otherwise print d to 4 decimal places
 
@@ -107,7 +107,7 @@ fs.readFileSync(process.argv[2]).toString().split('\n').forEach(function (line)
 {
     if (chomp(line) === '0') return;
     if (first) {
-        npoints = Number(chomp(line));
+        npoints = Number(line);
         first = false;
     }
     else {
