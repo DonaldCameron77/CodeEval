@@ -62,11 +62,11 @@ fs.readFileSync(process.argv[2]).toString().split('\n').forEach(function (line)
             var newDigit = num % 10;
             num = Math.floor(num / 10);
             if (newDigit !== 0) {
-                roman[roman.length] = rns[digitNumber][newDigit];
+                roman.push(rns[digitNumber][newDigit]);
+                // nicer than using indexing to create new elements in the roman array
             }
             digitNumber += 1;
         }
-
         console.log(roman.reverse().join(""));
     }
 });
