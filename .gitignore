@@ -46,6 +46,7 @@ Easy/MultiplicationTables
 Easy/MultiplyLists
 Easy/NmodM
 Easy/OddNumbers
+Easy/OneZeroTwoZeros
 Easy/PenultimateWord
 # Easy/PrimePalindrome
 # Easy/QueryBoard
@@ -66,6 +67,7 @@ Easy/SumOfIntegersFromFile
 Easy/SwapCase
 Easy/SwapElements
 Easy/TheMajorElement
+Easy/TrickOrTreat
 Easy/UniqueElements
 Easy/WordToDigit
 
@@ -112,6 +114,7 @@ Moderate/StringRotation
 # Moderate/Sudoku
 Moderate/SumOfIntegers
 Moderate/SumToZero
+# Moderate/ToPiOrNotToPi
 Moderate/TrailingString
 # Moderate/URIcomparison
 Moderate/ValidParentheses
